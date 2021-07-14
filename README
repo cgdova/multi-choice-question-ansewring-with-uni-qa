@@ -1,0 +1,61 @@
+--------------------------------------------------------- begin file -
+README
+----------------------------------------------------------------------
+
+the code herein builds a multiple choice answering system, training
+on the social iqa [1] dataset for learning commonsense reasoning,
+using the hugging face and pytorch libraries.
+
+the system is a fine-tuned encoder of unified qa [2]. my approach is
+to treat this task a binary classification problem, where given
+a question, context, and one potential condidate answer, the model
+estimates the probability that the given candidate is actually the
+answer or not. 
+
+    p(a | q, c) ∈ [0, 1]
+
+we thus run each candidate answer one at a time (this can be
+parallelized) along with the question and context, get the raw
+logits of each, and then perform a softmax and treat the argmax
+as the ansswer to the question.
+
+    argmax(softmax( p(a | q, c)), ∀a: candidate_answer(a) = T
+
+[1] sap et al. 2019: 
+    social iqa: commonsense reasoning about social interactions
+[2] khashabi et al 2020:
+    unified qa: crossing format boundaries with a single qa system
+
+----------------------------------------------------------------------
+
+models.py:
+    this module holds class FinetunedQA, which defines our approach
+    described above. this code is not meant to be run directly.
+
+data_processing.py:
+    this module holds class SocialIQA which is reponsible for
+    processing, formatting social iqa data, with additional
+    functionality. this script is also not meant to be run directly.
+
+build.py:
+    this module demostrate how to use both modules above to fine-
+    tune the encoder component of unified qa. this script is meant
+    to be run directly, it accepts no command line argumetns, just
+    simply cd into the folder containing these files and do.
+
+        >>> python build.py
+
+data:
+    this is a folder containing the relevant data, housing json
+    files:
+        dev
+        test
+        train
+    each entry holds context, question, and candidate answer fields.
+
+----------------------------------------------------------------------
+
+this code was made with the intention to be well formated, documented
+and thus relatively easy to follow. have fun!
+
+----------------------------------------------------------- end file -
