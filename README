@@ -8,7 +8,7 @@ using the hugging face and pytorch libraries.
 
 the system is a fine-tuned encoder of unified qa [2]. my approach is
 to treat this task as a binary classification problem, where given
-a question, context, and one potential condidate answer, the model
+a question, context, and one potential candidate answer, the model
 estimates the probability that the given candidate is actually the
 answer or not. 
 
@@ -19,7 +19,7 @@ parallelized) along with the question and context, get the raw
 logits of each, and then perform a softmax and extract the argmax
 as the predicted answer to the question.
 
-    argmax(softmax( p(a | q, c)), ∀a: candidate_answer(a) = T
+    argmax(softmax(p(a | q, c)), ∀a: candidate_answer(a) = T
 
 [1] sap et al. 2019: 
     social iqa: commonsense reasoning about social interactions
@@ -47,7 +47,7 @@ build.py:
 
 data:
     this is a folder containing the relevant data, housing json
-    files:
+      files:
         dev
         test
         train
@@ -55,7 +55,7 @@ data:
 
 ----------------------------------------------------------------------
 
-this code was made with the intention to be well formated, documented
+this code was written to be well formated, documented,
 and thus relatively easy to follow. have fun!
 
 ----------------------------------------------------------- end file -
