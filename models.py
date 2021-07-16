@@ -1,6 +1,6 @@
 # begin script -------------------------------------------------------
 
-""" model.py
+""" models.py
 module holding FineTunedQA, our OOP approach to multi-choice qa,
 via fine-tuning the encoder of UnifiedQA (khashabi et al. 2020), on
 SocialIQA (Sap et al. 2019). we define multi-choice qa as a binary
@@ -217,7 +217,7 @@ class FineTunedQA(nn.Module):
             # if model performance improved for this epoch,
             # save model, to enforce early stopping.
             if prev_accuracy < curr_accuracy:
-                pre_accuracy = curr_accuracy
+                prev_accuracy = curr_accuracy
                 self.save()
                 print('Model saved at: ./fine-tuned-uni-qa.pt')
 
@@ -251,8 +251,8 @@ class FineTunedQA(nn.Module):
                 # run a forward pass on the model, producing raw
                 # logits. we reshape to a matrix of size
                 # [batch size, num canidate answers], so we
-                # can softmax over the colspace. to get most 
-                # probable candidate answer.
+                # can softmax over the colspace at each row
+                # to get most probable candidate answer.
                 batch_size  = len(targets) // self.num_candidates
                 num_choices = self.num_candidates
 
@@ -269,8 +269,8 @@ class FineTunedQA(nn.Module):
                 probs = torch.softmax( logits, dim=-1 )
 
                 # now we can retrive the argmaxes along the col
-                # space to what the model thinks is the answer to
-                # each question. 
+                # space for each row to extract what the model thinks
+                # is the most probable answer to each question. 
                 preds = probs.argmax( dim=-1 )
 
                 # now we can compute accuracy, seeing how many
