@@ -7,7 +7,7 @@ on the social iqa [1] dataset for learning commonsense reasoning,
 using the hugging face and pytorch libraries.
 
 the system is a fine-tuned encoder of unified qa [2]. my approach is
-to treat this task a binary classification problem, where given
+to treat this task as a binary classification problem, where given
 a question, context, and one potential condidate answer, the model
 estimates the probability that the given candidate is actually the
 answer or not. 
@@ -16,8 +16,8 @@ answer or not.
 
 we thus run each candidate answer one at a time (this can be
 parallelized) along with the question and context, get the raw
-logits of each, and then perform a softmax and treat the argmax
-as the ansswer to the question.
+logits of each, and then perform a softmax and extract the argmax
+as the predicted answer to the question.
 
     argmax(softmax( p(a | q, c)), ∀a: candidate_answer(a) = T
 
@@ -30,17 +30,17 @@ as the ansswer to the question.
 
 models.py:
     this module holds class FinetunedQA, which defines our approach
-    described above. this code is not meant to be run directly.
+    described above -- importable.
 
 data_processing.py:
     this module holds class SocialIQA which is reponsible for
     processing, formatting social iqa data, with additional
-    functionality. this script is also not meant to be run directly.
+    functionality -- importable.
 
 build.py:
     this module demostrate how to use both modules above to fine-
     tune the encoder component of unified qa. this script is meant
-    to be run directly, it accepts no command line argumetns, just
+    to be run directly, it accepts no command line arguments, just
     simply cd into the folder containing these files and do.
 
         >>> python build.py
